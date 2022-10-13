@@ -1,3 +1,3 @@
 # Data Parser
 
-Allow users to create html data representation from csv and prn files
+CLI appication that provides users with ability to create html data representation from csv and prn files
