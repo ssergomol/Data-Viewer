@@ -5,6 +5,8 @@ import (
 	"os"
 	"path/filepath"
 	"sync"
+
+	"github.com/yookoala/realpath"
 )
 
 type Converter struct {
@@ -20,7 +22,10 @@ func NewConverter(path string, reporter *Info) *Converter {
 }
 
 func (c *Converter) createOutputFile(output Output) error {
-	templPath := realpath.realpath("../templates/table.tmpl")
+	templPath, err := realpath.Realpath("../templates/table.tmpl")
+	if err != nil {
+		panic(err)
+	}
 	name := filepath.Base(templPath)
 	templ, err := template.New(name).ParseFiles(templPath)
 	if err != nil {
