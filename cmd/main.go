@@ -8,9 +8,9 @@ import (
 	tools "github.com/ssergomol/data-viewer/pkg/process-tools"
 )
 
-func Process(filePath string) {
+func Process(filePath string, delim rune) {
 	// TODO: create reporter
-	reporter := tools.NewReporter(filePath)
+	reporter := tools.NewReporter(filePath, delim)
 
 	// TODO: create parser
 	parser := tools.NewParser(filePath, reporter)
@@ -50,5 +50,9 @@ func main() {
 		panic(err)
 	}
 
-	Process(fileName)
+	if len(os.Args[2:]) == 0 {
+		Process(fileName, ',')
+	} else {
+		Process(fileName, rune(os.Args[2][0]))
+	}
 }

@@ -8,11 +8,11 @@ import (
 )
 
 type Converter struct {
-	reporter *Reporter
+	reporter *Info
 	filePath string
 }
 
-func NewConverter(path string, reporter *Reporter) *Converter {
+func NewConverter(path string, reporter *Info) *Converter {
 	return &Converter{
 		reporter: reporter,
 		filePath: path,
@@ -20,7 +20,7 @@ func NewConverter(path string, reporter *Reporter) *Converter {
 }
 
 func (c *Converter) createOutputFile(output Output) error {
-	templPath := "/Users/ssergomol/Projects/Internships/SafeBoard2022/Data-Viewer/pkg/templates/table.tmpl"
+	templPath := realpath.realpath("../templates/table.tmpl")
 	name := filepath.Base(templPath)
 	templ, err := template.New(name).ParseFiles(templPath)
 	if err != nil {

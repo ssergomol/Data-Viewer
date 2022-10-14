@@ -9,10 +9,10 @@ import (
 
 type Parser struct {
 	file     string
-	reporter *Reporter
+	reporter *Info
 }
 
-func NewParser(filePath string, reporter *Reporter) Parser {
+func NewParser(filePath string, reporter *Info) Parser {
 	return Parser{
 		file:     filePath,
 		reporter: reporter,
@@ -42,6 +42,8 @@ func (p *Parser) Read(wg *sync.WaitGroup, entries chan<- []string, done chan<- b
 
 	// parse headers
 	reader := csv.NewReader(file)
+	reader.LazyQuotes = true
+	reader.Comma = p.reporter.Delimeter
 
 	if err := p.parseHeaders(reader); err != nil {
 		panic(err)

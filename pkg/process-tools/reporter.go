@@ -1,14 +1,16 @@
 package process_tools
 
-type Reporter struct {
-	Headers  []string
-	FilePath string
+type Info struct {
+	Headers   []string
+	FilePath  string
+	Delimeter rune
 }
 
-func NewReporter(path string) *Reporter {
+func NewReporter(path string, delim rune) *Info {
 	headers := make([]string, 0)
-	return &Reporter{
-		Headers:  headers,
-		FilePath: path,
+	return &Info{
+		Headers:   headers,
+		FilePath:  path,
+		Delimeter: delim,
 	}
 }
