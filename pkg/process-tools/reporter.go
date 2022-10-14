@@ -5,9 +5,9 @@ type Reporter struct {
 	FilePath string
 }
 
-func NewReporter(path string) Reporter {
+func NewReporter(path string) *Reporter {
 	headers := make([]string, 0)
-	return Reporter{
+	return &Reporter{
 		Headers:  headers,
 		FilePath: path,
 	}

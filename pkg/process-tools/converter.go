@@ -1,7 +1,6 @@
 package process_tools
 
 import (
-	"errors"
 	"html/template"
 	"os"
 	"path/filepath"
@@ -9,21 +8,26 @@ import (
 )
 
 type Converter struct {
-	reporter Reporter
+	reporter *Reporter
 	filePath string
 }
 
-func NewConverter(path string, rep Reporter) *Converter {
+func NewConverter(path string, reporter *Reporter) *Converter {
 	return &Converter{
-		reporter: rep,
+		reporter: reporter,
 		filePath: path,
 	}
 }
 
 func (c *Converter) createOutputFile(output Output) error {
-	templPath := "/pkg/templates/table.tmpl"
-	templ := template.Must(template.New("Output").ParseFiles(templPath))
-	OutputFile, err := os.OpenFile("output.html", os.O_WRONLY|os.O_CREATE, 0600)
+	templPath := "/Users/ssergomol/Projects/Internships/SafeBoard2022/Data-Viewer/pkg/templates/table.tmpl"
+	name := filepath.Base(templPath)
+	templ, err := template.New(name).ParseFiles(templPath)
+	if err != nil {
+		panic(err)
+	}
+
+	OutputFile, err := os.Create("output.html")
 	if err != nil {
 		panic(err)
 	}
@@ -46,10 +50,9 @@ func (c *Converter) ProcessEntry(wg *sync.WaitGroup, entries <-chan []string, do
 
 		case entry := <-entries:
 			if len(entry) == 0 {
-				err := errors.New("Can't process entry")
-				panic(err)
+				continue
 			}
-
+			data = append(data, entry)
 		}
 
 		if exit {
@@ -67,4 +70,5 @@ func (c *Converter) ProcessEntry(wg *sync.WaitGroup, entries <-chan []string, do
 	if err != nil {
 		panic(err)
 	}
+
 }

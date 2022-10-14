@@ -9,10 +9,10 @@ import (
 
 type Parser struct {
 	file     string
-	reporter Reporter
+	reporter *Reporter
 }
 
-func NewParser(filePath string, reporter Reporter) Parser {
+func NewParser(filePath string, reporter *Reporter) Parser {
 	return Parser{
 		file:     filePath,
 		reporter: reporter,
