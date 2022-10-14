@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>{{.FileName}}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css">
+</head>
+<body class="">
+    <div class="container-fluid">
+        <h1>{{.FileName}}</h1>
+        <table class="table table-striped">
+            <tr colspan="{{.HeadersNumb}}" class="success">
+                {{range $header := .Headers}}
+                <th>{{$header}}</th>
+                {{end}}
+            </tr>
+
+            {{ $total := .HeadersNumb }}
+
+            {{ range $d := .Data}}
+                <tr colspan="{{$total}}">
+                    {{ range $elem := $d }}
+                    <td>{{$elem}}</td>
+                    {{end}}
+                </tr>
+            {{else}}
+            <tr>
+                <td colspan="{{$total}}" align="center">No data was exported.</td>
+            </tr>
+            {{end}}
+        </table>
+    </div>
+</body>
+</html>
