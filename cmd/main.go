@@ -31,7 +31,7 @@ func Process() {
 
 func main() {
 	if len(os.Args[1:]) == 0 {
-		err := errors.New("Error: no filepathes were provided!")
+		err := errors.New("no filepathes were provided!")
 		panic(err)
 	}
 
@@ -43,7 +43,7 @@ func main() {
 	}
 
 	if fileInfo.IsDir() {
-		err := errors.New("Error: can't read the directiory")
+		err := errors.New("can't read the directiory")
 		panic(err)
 	}
 
