@@ -57,5 +57,4 @@ func (p *Parser) Read(wg *sync.WaitGroup, entries chan []string, done chan bool)
 		// c.reporter.RecordProcessed()
 		entries <- entry
 	}
-
 }

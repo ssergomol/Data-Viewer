@@ -7,11 +7,11 @@ import (
 )
 
 func Process() {
-	// create reporter
+	// TODO: create reporter
 
-	// create parser
+	// TODO: create parser
 
-	// create waitgropup
+	// TODO: create waitgropup
 
 	wg := new(sync.WaitGroup)
 	wg.Add(2)
@@ -21,9 +21,9 @@ func Process() {
 	entry := make(chan []string)
 	done := make(chan []bool)
 
-	// run goroutine to convert data
+	// TODO: run goroutine to convert data
 
-	// run goroutine to read csv data
+	// TODO: run goroutine to read csv data
 
 	// wait untill all goroitines finish
 	wg.Wait()
