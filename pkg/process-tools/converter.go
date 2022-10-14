@@ -13,6 +13,13 @@ type Converter struct {
 	filePath string
 }
 
+func NewConverter(path string, rep Reporter) *Converter {
+	return &Converter{
+		reporter: rep,
+		filePath: path,
+	}
+}
+
 func (c *Converter) createOutputFile(output Output) error {
 	templPath := "/pkg/templates/table.tmpl"
 	templ := template.Must(template.New("Output").ParseFiles(templPath))

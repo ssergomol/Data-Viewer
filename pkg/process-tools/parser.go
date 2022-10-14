@@ -12,7 +12,7 @@ type Parser struct {
 	reporter Reporter
 }
 
-func CreateCSVParser(filePath string, reporter Reporter) Parser {
+func NewParser(filePath string, reporter Reporter) Parser {
 	return Parser{
 		file:     filePath,
 		reporter: reporter,
