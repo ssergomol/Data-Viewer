@@ -10,7 +10,7 @@ import (
 
 func Process(filePath string, delim rune) {
 	// TODO: create reporter
-	reporter := tools.NewReporter(filePath, delim)
+	reporter := tools.CreateInfo(filePath, delim)
 
 	// TODO: create parser
 	parser := tools.NewParser(filePath, reporter)

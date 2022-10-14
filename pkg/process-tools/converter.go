@@ -22,7 +22,7 @@ func NewConverter(path string, reporter *Info) *Converter {
 }
 
 func (c *Converter) createOutputFile(output Output) error {
-	templPath, err := realpath.Realpath("../templates/table.tmpl")
+	templPath, err := realpath.Realpath("../pkg/templates/table.tmpl")
 	if err != nil {
 		panic(err)
 	}

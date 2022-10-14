@@ -6,7 +6,7 @@ type Info struct {
 	Delimeter rune
 }
 
-func NewReporter(path string, delim rune) *Info {
+func CreateInfo(path string, delim rune) *Info {
 	headers := make([]string, 0)
 	return &Info{
 		Headers:   headers,
