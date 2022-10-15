@@ -36,8 +36,9 @@ func (c *Converter) createOutputFile(output Output) error {
 	if err != nil {
 		panic(err)
 	}
-
-	OutputFile, err := os.Create("output.html")
+	fileName := filepath.Base(c.reporter.FilePath)
+	fileExt := c.reporter.FileExt
+	OutputFile, err := os.Create(fileName[:len(fileName)-len(fileExt)] + "_" + fileExt[1:] + ".html")
 	if err != nil {
 		panic(err)
 	}
