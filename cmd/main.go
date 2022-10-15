@@ -6,7 +6,7 @@ simple text will be represented in HTML format
 
 Usage:
 
-	main.go [path] [delimeter]
+	go run ./cmd/main.go [path] [delimeter]
 
 path:
 	Path to file with "csv" or "prn" extensions.
