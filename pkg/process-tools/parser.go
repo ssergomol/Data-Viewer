@@ -3,7 +3,6 @@ package process_tools
 import (
 	"bufio"
 	"encoding/csv"
-	"fmt"
 	"io"
 	"os"
 	"sync"
@@ -29,7 +28,6 @@ func (p *Parser) parseCSVHeaders(r *csv.Reader) error {
 
 func (p *Parser) parsePRNHeaders(scanner *bufio.Scanner) {
 	scanner.Scan()
-	fmt.Println(scanner.Text())
 	p.reporter.Headers = append(p.reporter.Headers, scanner.Text())
 }
 
@@ -56,7 +54,6 @@ func (p *Parser) Read(wg *sync.WaitGroup, entries chan<- []string, done chan<- b
 
 		for scanner.Scan() {
 			entries <- []string{scanner.Text()}
-			fmt.Println(scanner.Text())
 		}
 
 	} else {
