@@ -38,16 +38,13 @@ func (p *Parser) Read(wg *sync.WaitGroup, entries chan<- []string, done chan<- b
 		wg.Done()
 	}()
 
-	// open file for reading
-
 	file, err := os.OpenFile(p.file, os.O_RDONLY, 755)
 	if err != nil {
 		panic(err)
 	}
 	defer file.Close()
 
-	// parse headers
-
+	// Parse headers according to defined extension
 	if p.reporter.FileExt == ".prn" {
 		scanner := bufio.NewScanner(file)
 		p.parsePRNHeaders(scanner)
@@ -76,8 +73,6 @@ func (p *Parser) Read(wg *sync.WaitGroup, entries chan<- []string, done chan<- b
 				panic(err)
 			}
 
-			// notify reporter that process is finished
-			// c.reporter.RecordProcessed()
 			entries <- entry
 		}
 	}

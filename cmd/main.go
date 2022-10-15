@@ -42,6 +42,9 @@ func startProcessing(filePath string, delim rune, ext string) {
 	entries := make(chan []string)
 	done := make(chan bool)
 
+	// The parser reads the file line-by-line. After reading the line sends
+	// it to converter via channel.
+
 	go converter.ProcessEntry(wg, entries, done)
 	go parser.Read(wg, entries, done)
 

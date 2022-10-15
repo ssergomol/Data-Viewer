@@ -1,5 +1,7 @@
 package process_tools
 
+// Info entity holds some general inforamtion about provided file.
+// The parser and converter has the same instance of Info
 type Info struct {
 	Headers   []string
 	FilePath  string

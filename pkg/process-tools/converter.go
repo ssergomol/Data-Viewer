@@ -30,6 +30,7 @@ func (c *Converter) createOutputFile(output Output) error {
 	if err != nil {
 		panic(err)
 	}
+
 	name := filepath.Base(templPath)
 	templ, err := template.New(name).ParseFiles(templPath)
 	if err != nil {
@@ -40,6 +41,7 @@ func (c *Converter) createOutputFile(output Output) error {
 	if err != nil {
 		panic(err)
 	}
+	// Apply template to create html output
 	return templ.Execute(OutputFile, output)
 }
 
@@ -54,13 +56,15 @@ func (c *Converter) ProcessEntry(wg *sync.WaitGroup, entries <-chan []string, do
 	for {
 		select {
 		case <-done:
-			// reading completed
+			// Reading complete, so we can finish cycle iterating
 			exit = true
 
 		case entry := <-entries:
 			if len(entry) == 0 {
+				// If empty line is found, we should skip it
 				continue
 			}
+			// Append data, which was provided by parser
 			data = append(data, entry)
 		}
 
