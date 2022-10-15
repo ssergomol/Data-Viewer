@@ -3,14 +3,15 @@ package main
 import (
 	"errors"
 	"os"
+	"path/filepath"
 	"sync"
 
 	tools "github.com/ssergomol/data-viewer/pkg/process-tools"
 )
 
-func Process(filePath string, delim rune) {
+func startProcessing(filePath string, delim rune, ext string) {
 	// TODO: create reporter
-	reporter := tools.CreateInfo(filePath, delim)
+	reporter := tools.CreateInfo(filePath, delim, ext)
 
 	// TODO: create parser
 	parser := tools.NewParser(filePath, reporter)
@@ -50,9 +51,11 @@ func main() {
 		panic(err)
 	}
 
-	if len(os.Args[2:]) == 0 {
-		Process(fileName, ',')
-	} else {
-		Process(fileName, rune(os.Args[2][0]))
+	fileExt := filepath.Ext(fileName)
+
+	delimeter := ','
+	if len(os.Args[2:]) != 0 {
+		delimeter = rune(os.Args[2][0])
 	}
+	startProcessing(fileName, delimeter, fileExt)
 }

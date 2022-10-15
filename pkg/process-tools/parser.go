@@ -1,7 +1,9 @@
 package process_tools
 
 import (
+	"bufio"
 	"encoding/csv"
+	"fmt"
 	"io"
 	"os"
 	"sync"
@@ -19,10 +21,16 @@ func NewParser(filePath string, reporter *Info) Parser {
 	}
 }
 
-func (p *Parser) parseHeaders(r *csv.Reader) error {
+func (p *Parser) parseCSVHeaders(r *csv.Reader) error {
 	headers, err := r.Read()
 	p.reporter.Headers = headers
 	return err
+}
+
+func (p *Parser) parsePRNHeaders(scanner *bufio.Scanner) {
+	scanner.Scan()
+	fmt.Println(scanner.Text())
+	p.reporter.Headers = append(p.reporter.Headers, scanner.Text())
 }
 
 func (p *Parser) Read(wg *sync.WaitGroup, entries chan<- []string, done chan<- bool) {
@@ -41,26 +49,40 @@ func (p *Parser) Read(wg *sync.WaitGroup, entries chan<- []string, done chan<- b
 	defer file.Close()
 
 	// parse headers
-	reader := csv.NewReader(file)
-	reader.LazyQuotes = true
-	reader.Comma = p.reporter.Delimeter
 
-	if err := p.parseHeaders(reader); err != nil {
-		panic(err)
-	}
+	if p.reporter.FileExt == ".prn" {
+		scanner := bufio.NewScanner(file)
+		p.parsePRNHeaders(scanner)
 
-	// read line by line
-	for {
-		entry, err := reader.Read()
-		if err != nil {
-			if err == io.EOF {
-				break
-			}
+		for scanner.Scan() {
+			entries <- []string{scanner.Text()}
+			fmt.Println(scanner.Text())
+		}
+
+	} else {
+		reader := csv.NewReader(file)
+		reader.LazyQuotes = true
+		reader.Comma = p.reporter.Delimeter
+		reader.TrimLeadingSpace = true
+
+		if err := p.parseCSVHeaders(reader); err != nil {
 			panic(err)
 		}
 
-		// notify reporter that process is finished
-		// c.reporter.RecordProcessed()
-		entries <- entry
+		// read line by line
+		for {
+			entry, err := reader.Read()
+			if err != nil {
+				if err == io.EOF {
+					break
+				}
+				panic(err)
+			}
+
+			// notify reporter that process is finished
+			// c.reporter.RecordProcessed()
+			entries <- entry
+		}
 	}
+
 }
