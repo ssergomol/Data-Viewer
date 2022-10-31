@@ -6,6 +6,8 @@ import (
 	"io"
 	"os"
 	"sync"
+
+	"github.com/sirupsen/logrus"
 )
 
 type Parser struct {
@@ -40,7 +42,7 @@ func (p *Parser) Read(wg *sync.WaitGroup, entries chan<- []string, done chan<- b
 
 	file, err := os.OpenFile(p.file, os.O_RDONLY, 755)
 	if err != nil {
-		panic(err)
+		logrus.Fatal(err)
 	}
 	defer file.Close()
 
@@ -60,7 +62,7 @@ func (p *Parser) Read(wg *sync.WaitGroup, entries chan<- []string, done chan<- b
 		reader.TrimLeadingSpace = true
 
 		if err := p.parseCSVHeaders(reader); err != nil {
-			panic(err)
+			logrus.Fatal(err)
 		}
 
 		// read line by line
@@ -70,7 +72,7 @@ func (p *Parser) Read(wg *sync.WaitGroup, entries chan<- []string, done chan<- b
 				if err == io.EOF {
 					break
 				}
-				panic(err)
+				logrus.Fatal(err)
 			}
 
 			entries <- entry

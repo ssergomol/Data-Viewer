@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 	"sync"
 
+	"github.com/sirupsen/logrus"
 	"github.com/yookoala/realpath"
 )
 
@@ -26,21 +27,21 @@ func (c *Converter) createOutputFile(output Output) error {
 	if c.reporter.FileExt == ".prn" {
 		templName = "prn.tmpl"
 	}
-	templPath, err := realpath.Realpath("../pkg/templates/" + templName)
+	templPath, err := realpath.Realpath("pkg/templates/" + templName)
 	if err != nil {
-		panic(err)
+		logrus.Fatal(err)
 	}
 
 	name := filepath.Base(templPath)
 	templ, err := template.New(name).ParseFiles(templPath)
 	if err != nil {
-		panic(err)
+		logrus.Fatal(err)
 	}
 	fileName := filepath.Base(c.reporter.FilePath)
 	fileExt := c.reporter.FileExt
-	OutputFile, err := os.Create(fileName[:len(fileName)-len(fileExt)] + "_" + fileExt[1:] + ".html")
+	OutputFile, err := os.Create("output/" + fileName[:len(fileName)-len(fileExt)] + "_" + fileExt[1:] + ".html")
 	if err != nil {
-		panic(err)
+		logrus.Fatal(err)
 	}
 	// Apply template to create html output
 	return templ.Execute(OutputFile, output)
@@ -82,7 +83,7 @@ func (c *Converter) ProcessEntry(wg *sync.WaitGroup, entries <-chan []string, do
 	})
 
 	if err != nil {
-		panic(err)
+		logrus.Fatal(err)
 	}
 
 }
