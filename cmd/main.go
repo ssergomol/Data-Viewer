@@ -5,8 +5,8 @@ the table in HTML will be created, in other case of "prn" file - the
 simple text will be represented in HTML format
 
 Usage:
-
-	go run ./cmd/main.go [path] [delimeter]
+	make
+	./main [path] [delimeter]
 
 path:
 	Path to file with "csv" or "prn" extensions.
@@ -25,6 +25,7 @@ import (
 	"path/filepath"
 	"sync"
 
+	"github.com/sirupsen/logrus"
 	tools "github.com/ssergomol/data-viewer/pkg/process-tools"
 )
 
@@ -56,27 +57,27 @@ func main() {
 	// Check if the path to file was provided
 	if len(os.Args[1:]) == 0 {
 		err := errors.New("no filepathes were provided!")
-		panic(err)
+		logrus.Fatal(err)
 	}
 
 	// Get Inforamtion about the file
-	fileName := os.Args[1]
+	fileName := "input/" + os.Args[1]
 	fileInfo, err := os.Stat(fileName)
 	if err != nil {
-		panic(err)
+		logrus.Fatal(err)
 	}
 
 	// Check if the file is not a directory
 	if fileInfo.IsDir() {
 		err := errors.New("can't read the directiory")
-		panic(err)
+		logrus.Fatal(err)
 	}
 
 	// Get the extension and provided delimeter
 	fileExt := filepath.Ext(fileName)
 	if fileExt != ".prn" && fileExt != ".csv" {
 		err := errors.New("Wrong file extension")
-		panic(err)
+		logrus.Fatal(err)
 	}
 	delimeter := ','
 	if len(os.Args[2:]) != 0 {
